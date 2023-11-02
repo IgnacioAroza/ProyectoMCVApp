@@ -19,6 +19,10 @@ namespace ProyectoFinalApp.Controllers
         public IActionResult Index()
         {
             var productos = _context.productos.ToList();
+            foreach(var item in productos)
+            {
+                item.stocks = _context.stocks.Where(x => x.productoId == item.Id).ToList();
+            }
             return View(productos);
         }
 

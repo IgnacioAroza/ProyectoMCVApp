@@ -21,14 +21,8 @@ namespace ProyectoFinalApp.Controllers
             _env = env;
         }
 
-        public IActionResult Index()
-        {
-            var productos = _context.productos.ToList();
-            return View(productos);
-        }
-
         // GET: Productos
-        public async Task<IActionResult> Index2()
+        public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.productos.Include(p => p.categoria);
             return View(await applicationDbContext.ToListAsync());

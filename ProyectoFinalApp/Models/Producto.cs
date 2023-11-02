@@ -9,5 +9,6 @@
         public string? imagen { get; set; }
         public int categoriaId { get; set; }
         public Categoria? categoria { get; set; }
+        public List<Stock>? stocks { get; set; }
     }
 }
