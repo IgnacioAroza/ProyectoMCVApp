@@ -12,8 +12,8 @@ using ProyectoFinalApp.Data;
 namespace ProyectoFinalApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231030145234_inicial2")]
-    partial class inicial2
+    [Migration("20231103145022_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,6 +296,9 @@ namespace ProyectoFinalApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("stockId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("categoriaId");
@@ -320,7 +323,7 @@ namespace ProyectoFinalApp.Data.Migrations
                     b.Property<DateTime>("fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("productoId")
+                    b.Property<int?>("productoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -401,14 +404,17 @@ namespace ProyectoFinalApp.Data.Migrations
                         .HasForeignKey("compradorId");
 
                     b.HasOne("ProyectoFinalApp.Models.Producto", "producto")
-                        .WithMany()
-                        .HasForeignKey("productoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("stocks")
+                        .HasForeignKey("productoId");
 
                     b.Navigation("comprador");
 
                     b.Navigation("producto");
+                });
+
+            modelBuilder.Entity("ProyectoFinalApp.Models.Producto", b =>
+                {
+                    b.Navigation("stocks");
                 });
 #pragma warning restore 612, 618
         }

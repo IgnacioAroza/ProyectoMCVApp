@@ -24,7 +24,7 @@ namespace ProyectoFinalApp.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.productos.Include(p => p.categoria);
+            var applicationDbContext = _context.productos.Include(p => p.categoria).Include(p => p.stocks);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -51,6 +51,7 @@ namespace ProyectoFinalApp.Controllers
         public IActionResult Create()
         {
             ViewData["categoriaId"] = new SelectList(_context.categorias, "Id", "descripcion");
+            ViewData["stockId"] = new SelectList(_context.stocks, "Id", "cantidad");
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace ProyectoFinalApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,nombre,codigo,descripcion,imagen,categoriaId")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Id,nombre,codigo,descripcion,imagen,categoriaId,stockId")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +71,7 @@ namespace ProyectoFinalApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["categoriaId"] = new SelectList(_context.categorias, "Id", "Id", producto.categoriaId);
+            ViewData["stockId"] = new SelectList(_context.stocks, "Id", "cantidad", producto.stockId);
             return View(producto);
         }
 
@@ -87,6 +89,7 @@ namespace ProyectoFinalApp.Controllers
                 return NotFound();
             }
             ViewData["categoriaId"] = new SelectList(_context.categorias, "Id", "descripcion", producto.categoriaId);
+            ViewData["stockId"] = new SelectList(_context.stocks, "Id", "cantidad", producto.stockId);
             return View(producto);
         }
 
@@ -95,7 +98,7 @@ namespace ProyectoFinalApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,nombre,codigo,descripcion,imagen,categoriaId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,nombre,codigo,descripcion,imagen,categoriaId, stockId")] Producto producto)
         {
             if (id != producto.Id)
             {
@@ -128,6 +131,7 @@ namespace ProyectoFinalApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["categoriaId"] = new SelectList(_context.categorias, "Id", "Id", producto.categoriaId);
+            ViewData["stockId"] = new SelectList(_context.stocks, "Id", "Id", producto.stockId);
             return View(producto);
         }
 

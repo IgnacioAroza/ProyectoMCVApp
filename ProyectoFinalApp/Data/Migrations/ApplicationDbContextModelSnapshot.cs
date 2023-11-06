@@ -238,7 +238,7 @@ namespace ProyectoFinalApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categorias", (string)null);
+                    b.ToTable("categorias");
                 });
 
             modelBuilder.Entity("ProyectoFinalApp.Models.Comprador", b =>
@@ -265,7 +265,7 @@ namespace ProyectoFinalApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("compradores", (string)null);
+                    b.ToTable("compradores");
                 });
 
             modelBuilder.Entity("ProyectoFinalApp.Models.Producto", b =>
@@ -293,11 +293,14 @@ namespace ProyectoFinalApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("stockId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("categoriaId");
 
-                    b.ToTable("productos", (string)null);
+                    b.ToTable("productos");
                 });
 
             modelBuilder.Entity("ProyectoFinalApp.Models.Stock", b =>
@@ -317,7 +320,7 @@ namespace ProyectoFinalApp.Data.Migrations
                     b.Property<DateTime>("fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("productoId")
+                    b.Property<int?>("productoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -326,7 +329,7 @@ namespace ProyectoFinalApp.Data.Migrations
 
                     b.HasIndex("productoId");
 
-                    b.ToTable("stocks", (string)null);
+                    b.ToTable("stocks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -398,14 +401,17 @@ namespace ProyectoFinalApp.Data.Migrations
                         .HasForeignKey("compradorId");
 
                     b.HasOne("ProyectoFinalApp.Models.Producto", "producto")
-                        .WithMany()
-                        .HasForeignKey("productoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("stocks")
+                        .HasForeignKey("productoId");
 
                     b.Navigation("comprador");
 
                     b.Navigation("producto");
+                });
+
+            modelBuilder.Entity("ProyectoFinalApp.Models.Producto", b =>
+                {
+                    b.Navigation("stocks");
                 });
 #pragma warning restore 612, 618
         }

@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.categoria)
             </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.stocks)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -43,7 +46,6 @@
                 @Html.DisplayFor(modelItem => item.descripcion)
             </td>
             <td>
-                @* @Html.DisplayFor(modelItem => item.imagen) *@
                 @if (!string.IsNullOrEmpty(item.imagen))
                 {
                     <img src="~/fotos/@item.imagen" style="max-width:50px" />
@@ -51,6 +53,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.categoria.descripcion)
+            </td>
+            <td>
+                @foreach (var stock in item.stocks)
+                {
+                     @Html.DisplayFor(modelItem => stock.cantidad)
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |

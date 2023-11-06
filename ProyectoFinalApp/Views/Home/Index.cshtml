@@ -11,12 +11,15 @@
             @foreach (var producto in Model)
             {
                 <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
+                    <div class="card mb-4 shadow-sm" style="height:400px">
                         <img src="~/fotos/@producto.imagen" class="img-fluid mx-auto d-block mt-2" style="max-width:200px" />
                         <div class="card-body">
                             <h5 class="card-title">@producto.nombre</h5>
                             <p class="card-text">@producto.descripcion</p>
-                            <p class="card-text">Stock: @producto.stocks.Count()</p>
+                            @* @foreach (var item in producto)
+                            {
+                                <p class="card-text">Stock: @producto.stocks.Count()</p>
+                            } *@
                         </div>
                     </div>
                 </div>

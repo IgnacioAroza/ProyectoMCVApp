@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -49,7 +50,8 @@ namespace ProyectoFinalApp.Data.Migrations
                     codigo = table.Column<int>(type: "int", nullable: false),
                     descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    categoriaId = table.Column<int>(type: "int", nullable: false)
+                    categoriaId = table.Column<int>(type: "int", nullable: false),
+                    stockId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,15 +64,54 @@ namespace ProyectoFinalApp.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "stocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    productoId = table.Column<int>(type: "int", nullable: true),
+                    compradorId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_stocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_stocks_compradores_compradorId",
+                        column: x => x.compradorId,
+                        principalTable: "compradores",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_stocks_productos_productoId",
+                        column: x => x.productoId,
+                        principalTable: "productos",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_productos_categoriaId",
                 table: "productos",
                 column: "categoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_stocks_compradorId",
+                table: "stocks",
+                column: "compradorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_stocks_productoId",
+                table: "stocks",
+                column: "productoId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "stocks");
+
             migrationBuilder.DropTable(
                 name: "compradores");
 
