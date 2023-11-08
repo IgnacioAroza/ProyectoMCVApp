@@ -1,40 +1,59 @@
-﻿@model IEnumerable<ProyectoFinalApp.Models.Producto>
+﻿@* @model IEnumerable<ProyectoFinalApp.Models.Producto> *@
+@model ProyectoFinalApp.ViewModel.ProductoVM
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<p class="text-success bg-info">@ViewBag.resultado</p>
 
+<h1>Index</h1>
+<form method="post" asp-action="ImportarProductos" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="archivo">Seleccione un archivo Excel:</label>
+        <br />
+        <input type="file" name="archivo" id="archivo" class="form-control-file mt-2">
+    </div>
+    <button type="submit" class="btn btn-primary mt-2 mb-2">Importar</button>
+</form>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form>
+    Nombre:
+    <input type="text" placeholder="Ingresar nombre" name="busqNombre" value="@Model.busquedaNombre"/>
+    Codigo:
+    <input type="number" name="busqCodigo" value="@Model.busquedaCodigo"/>
+    Categoria:
+    <select asp-for="categoriaId" asp-items="@Model.listaCategorias">
+        <option value="">Todos</option>
+    </select>
+    <input type="submit" value="Buscar" class="btn btn-primary"/>
+    <input type="reset" value="Limpiar filtros" class="btn btn-danger"/>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
+                @Html.DisplayNameFor(model => model.productos[0].nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.codigo)
+                @Html.DisplayNameFor(model => model.productos[0].codigo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.descripcion)
+                @Html.DisplayNameFor(model => model.productos[0].descripcion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.imagen)
+                @Html.DisplayNameFor(model => model.productos[0].imagen)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.stocks)
+                @Html.DisplayNameFor(model => model.productos[0].categoria)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.productos) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.nombre)
@@ -55,12 +74,6 @@
                 @Html.DisplayFor(modelItem => item.categoria.descripcion)
             </td>
             <td>
-                @foreach (var stock in item.stocks)
-                {
-                     @Html.DisplayFor(modelItem => stock.cantidad)
-                }
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
@@ -69,3 +82,5 @@
 }
     </tbody>
 </table>
+
+<partial name="_Paginador" for="@Model.paginador"/>
