@@ -15,7 +15,7 @@ using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
-    [Authorize]
+    
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,28 +29,20 @@ namespace ProyectoFinalApp.Controllers
 
         public async Task<IActionResult> ImportarProductos(IFormFile archivo)
         {
-            if(archivo == null || archivo.Length == 0)
+            if (archivo == null || archivo.Length == 0)
             {
                 ViewBag.Mensaje = "Error: No se ha podido proporcionado un archivo de Excel";
                 return View();
             }
             try
             {
-                var pathDestino = Path.Combine(_env.WebRootPath, "impo");
-                var archivoDestino = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(archivo.FileName);
-                string rutaCompleta = Path.Combine(pathDestino, archivoDestino);
-
-                using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
-                {
-                    archivo.CopyTo(fileStream);
-                }
                 using (var package = new ExcelPackage(archivo.OpenReadStream()))
                 {
                     var worksheet = package.Workbook.Worksheets[0];
 
                     var productos = new List<Producto>();
 
-                    for(int row = worksheet.Dimension.Start.Row; row <= worksheet.Dimension.End.Row; row++)
+                    for (int row = worksheet.Dimension.Start.Row; row <= worksheet.Dimension.End.Row; row++)
                     {
                         if (int.TryParse(worksheet.Cells[row, 2].Value.ToString(), out int codigo))
                         {
@@ -68,7 +60,8 @@ namespace ProyectoFinalApp.Controllers
                     _context.productos.AddRange(productos);
                     _context.SaveChanges();
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ViewBag.Mensaje = "Error: La importación ha fallado. Verifica el formato del archivo o consulta los registros del servidor para obtener más detalles.";
                 Console.WriteLine("Error en la importación: " + ex.Message);
@@ -79,12 +72,12 @@ namespace ProyectoFinalApp.Controllers
                 }
             }
             var applicationDbContext = _context.productos.Include(a => a.categoria);
-            return View("Index", await applicationDbContext.ToListAsync());
+            return RedirectToAction("Index", applicationDbContext.ToListAsync());
         }
 
         [AllowAnonymous]
         // GET: Productos
-        public async Task<IActionResult> Index(string? busqNombre, int? busqCodigo, int? categoriaId, int pagina = 1)
+        public IActionResult Index(string? busqNombre, int? busqCodigo, int? categoriaId, int pagina = 1)
         {
             Paginador paginas = new Paginador();
             paginas.PaginaActual = pagina;

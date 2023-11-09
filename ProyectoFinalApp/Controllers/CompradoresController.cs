@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ProyectoFinalApp.Data;
 using ProyectoFinalApp.Models;
+using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
+    
     public class CompradoresController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,12 +25,40 @@ namespace ProyectoFinalApp.Controllers
             _env = env;
         }
 
+        [AllowAnonymous]
         // GET: Compradores
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? busqNombre, string? busqApellido, int pagina = 1)
         {
-              return _context.compradores != null ? 
-                          View(await _context.compradores.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.compradores'  is null.");
+            Paginador paginas = new Paginador();
+            paginas.PaginaActual = pagina;
+            paginas.RegistrosPorPagina = 3;
+
+            var applicationDbContext = _context.compradores.Select(c => c);
+            if (!string.IsNullOrWhiteSpace(busqNombre))
+            {
+                applicationDbContext = applicationDbContext.Where(c => c.nombre.Contains(busqNombre));
+                paginas.ValoresQueryString.Add("busquedaNombre", busqNombre);
+            }
+            if (!string.IsNullOrWhiteSpace(busqApellido))
+            {
+                applicationDbContext = applicationDbContext.Where(c => c.apellido.Contains(busqApellido));
+                paginas.ValoresQueryString.Add("busquedaApellido", busqApellido);
+            }
+
+            paginas.TotalRegistros = applicationDbContext.Count();
+
+            var mostrarRegistros = applicationDbContext
+                .Skip((pagina - 1) * paginas.RegistrosPorPagina)
+                .Take(paginas.RegistrosPorPagina);
+
+            CompradorVM datos = new CompradorVM()
+            {
+                compradores = mostrarRegistros.ToList(),
+                busquedaNombre = busqNombre,
+                busquedaApellido = busqApellido,
+                paginador = paginas
+            };
+            return View(datos);
         }
 
         // GET: Compradores/Details/5

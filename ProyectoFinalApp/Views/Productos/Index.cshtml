@@ -5,8 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<p class="text-success bg-info">@ViewBag.resultado</p>
-
 <h1>Index</h1>
 <form method="post" asp-action="ImportarProductos" enctype="multipart/form-data">
     <div class="form-group">
@@ -19,7 +17,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form>
+<form method="get" asp-action="Index">
     Nombre:
     <input type="text" placeholder="Ingresar nombre" name="busqNombre" value="@Model.busquedaNombre"/>
     Codigo:

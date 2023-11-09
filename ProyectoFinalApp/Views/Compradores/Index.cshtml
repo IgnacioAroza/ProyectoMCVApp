@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ProyectoFinalApp.Models.Comprador>
+﻿@* @model IEnumerable<ProyectoFinalApp.Models.Comprador> *@
+@model ProyectoFinalApp.ViewModel.CompradorVM
 
 @{
     ViewData["Title"] = "Index";
@@ -6,29 +7,38 @@
 
 <h1>Index</h1>
 
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form id="form">
+    Nombre:
+    <input type="text" placeholder="Ingresar nombre" name="busqNombre" value="@Model.busquedaNombre" />
+    Apellido:
+    <input type="text" placeholder="Ingresar apellido" name="busqApellido" value="@Model.busquedaApellido" />
+    <input type="submit" value="Buscar" class="btn btn-primary" />
+    <input type="reset" value="Limpiar filtros" class="btn btn-danger" />
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
+                @Html.DisplayNameFor(model => model.compradores[0].nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.apellido)
+                @Html.DisplayNameFor(model => model.compradores[0].apellido)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.dni)
+                @Html.DisplayNameFor(model => model.compradores[0].dni)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.foto)
+                @Html.DisplayNameFor(model => model.compradores[0].foto)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.compradores) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.nombre)
@@ -55,3 +65,5 @@
 }
     </tbody>
 </table>
+
+<partial name="_Paginador" for="@Model.paginador"/>
