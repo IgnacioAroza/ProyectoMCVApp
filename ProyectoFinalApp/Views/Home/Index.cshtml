@@ -16,10 +16,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@producto.nombre</h5>
                             <p class="card-text">@producto.descripcion</p>
-                            @* @foreach (var item in producto)
-                            {
-                                <p class="card-text">Stock: @producto.stocks.Count()</p>
-                            } *@
+                            @producto.stocks.Sum(x => x.cantidad)
                         </div>
                     </div>
                 </div>

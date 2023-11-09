@@ -19,32 +19,6 @@ namespace ProyectoFinalApp.Controllers
             _context = context;
         }
 
-        //Agregar cantidades de Stock
-        public IActionResult AgregarStock(int stockId, int cantAgregada)
-        {
-            var stock = _context.stocks.Find(stockId);
-            if(stock != null)
-            {
-                stock.cantidad += cantAgregada;
-                _context.SaveChanges();
-                return RedirectToAction("DetallesStock", new { stockId = stockId });
-            }
-            return NotFound();
-        }
-
-        //Vender productos
-        public IActionResult Vender(int stockId, int cantVendida)
-        {
-            var stock = _context.stocks.Find(stockId);
-            if(stock != null && stock.cantidad >= cantVendida)
-            {
-                stock.cantidad -= cantVendida;
-                _context.SaveChanges();
-                return RedirectToAction("DetallesStock", new { stockId = stockId });
-            }
-            return NotFound();
-        }
-
         // GET: Stocks
         public async Task<IActionResult> Index()
         {
@@ -87,6 +61,28 @@ namespace ProyectoFinalApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                _context.Add(stock);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["productoId"] = new SelectList(_context.productos, "Id", "Id", stock.productoId);
+            return View(stock);
+        }
+
+
+        public IActionResult Venta()
+        {
+            ViewData["productoId"] = new SelectList(_context.productos, "Id", "nombre");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Venta([Bind("Id,cantidad,fecha,productoId")] Stock stock)
+        {
+            if (ModelState.IsValid)
+            {
+                stock.cantidad *= -1;
                 _context.Add(stock);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

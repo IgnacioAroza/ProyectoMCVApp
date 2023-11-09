@@ -27,7 +27,7 @@
         <option value="">Todos</option>
     </select>
     <input type="submit" value="Buscar" class="btn btn-primary"/>
-    <input type="reset" value="Limpiar filtros" class="btn btn-danger"/>
+    <a asp-action="Index" class="btn btn-danger">Limpiar</a>
 </form>
 <table class="table">
     <thead>
@@ -72,9 +72,15 @@
                 @Html.DisplayFor(modelItem => item.categoria.descripcion)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">
+                    <i class="bi bi-card-text"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
             </td>
         </tr>
 }
