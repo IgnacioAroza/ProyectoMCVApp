@@ -81,7 +81,7 @@ namespace ProyectoFinalApp.Controllers
         {
             Paginador paginas = new Paginador();
             paginas.PaginaActual = pagina;
-            paginas.RegistrosPorPagina = 3;
+            paginas.RegistrosPorPagina = 5;
 
             var applicationDbContext = _context.productos.Include(p => p.categoria).Select(e => e);
             if (!string.IsNullOrEmpty(busqNombre))

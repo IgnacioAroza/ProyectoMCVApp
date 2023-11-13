@@ -20,11 +20,5 @@ Total Registros: @Model.TotalRegistros
                 <a class="page-link" asp-all-route-data="@Model.ValoresQueryString" asp-route-pagina="@(Model.PaginaActual + 1)">Siguiente</a>
             </li>
         }
-        @if (Model.TotalPaginas > 1 && Model.PaginaActual < Model.TotalPaginas)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-all-route-data="@Model.ValoresQueryString" asp-route-pagina="@(Model.TotalPaginas)">Ultima</a>
-            </li>
-        }
     </ul>
 </nav>
