@@ -24,7 +24,7 @@ namespace ProyectoFinalApp.Controllers
 
         [AllowAnonymous]
         // GET: Stocks
-        public async Task<IActionResult> Index(int pagina = 1)
+        public IActionResult Index(int pagina = 1)
         {
             Paginador paginas = new Paginador();
             paginas.PaginaActual = pagina;

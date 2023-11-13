@@ -27,7 +27,7 @@ namespace ProyectoFinalApp.Controllers
             _env = env;
         }
 
-        public IActionResult ImportarProductos(IFormFile archivo)
+        public async Task<IActionResult> ImportarProductos(IFormFile archivo)
         {
             if (archivo == null || archivo.Length == 0)
             {
@@ -72,7 +72,7 @@ namespace ProyectoFinalApp.Controllers
                 }
             }
             var applicationDbContext = _context.productos.Include(a => a.categoria);
-            return RedirectToAction("Index", applicationDbContext.ToListAsync());
+            return RedirectToAction("Index", await applicationDbContext.ToListAsync());
         }
 
         [AllowAnonymous]
