@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalApp.Data;
 using ProyectoFinalApp.Models;
+using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
+    [Authorize]
     public class CategoriasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,12 +22,28 @@ namespace ProyectoFinalApp.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: Categorias
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int pagina = 1)
         {
-              return _context.categorias != null ? 
-                          View(await _context.categorias.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.categorias'  is null.");
+            Paginador paginas = new Paginador();
+            paginas.PaginaActual = pagina;
+            paginas.RegistrosPorPagina = 3;
+
+            var applicationDbContext = _context.categorias.Select(c => c);
+
+            paginas.TotalRegistros = applicationDbContext.Count();
+
+            var mostrarRegistros = applicationDbContext
+                .Skip((pagina - 1) * paginas.RegistrosPorPagina)
+                .Take(paginas.RegistrosPorPagina);
+
+            CategoriaVM datos = new CategoriaVM()
+            {
+                categorias = mostrarRegistros.ToList(),
+                paginador = paginas
+            };
+            return View(datos);
         }
 
         // GET: Categorias/Details/5

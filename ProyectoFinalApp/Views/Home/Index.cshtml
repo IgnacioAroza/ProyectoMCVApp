@@ -12,15 +12,28 @@
             {
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm" style="height:400px">
-                        <img src="~/fotos/@producto.imagen" class="img-fluid mx-auto d-block mt-2" style="max-width:200px" />
+                        @if (!string.IsNullOrEmpty(producto.imagen))
+                        {
+                            <img src="~/fotos/@producto.imagen" class="img-fluid mx-auto d-block mt-2" style="max-width:200px" />
+                        }
                         <div class="card-body">
                             <h5 class="card-title">@producto.nombre</h5>
                             <p class="card-text">@producto.descripcion</p>
-                            @producto.stocks.Sum(x => x.cantidad)
+                            <p>Stock: @producto.stocks.Sum(x => x.cantidad)</p>
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-</div>
+</div>  
+
+<style>
+    h5{
+        font-size: 2rem;
+    }
+
+    p{
+        font-size: 1.2rem;
+    }
+</style>

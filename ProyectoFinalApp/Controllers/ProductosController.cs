@@ -15,7 +15,7 @@ using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
-    
+    [Authorize]
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +27,7 @@ namespace ProyectoFinalApp.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> ImportarProductos(IFormFile archivo)
+        public IActionResult ImportarProductos(IFormFile archivo)
         {
             if (archivo == null || archivo.Length == 0)
             {

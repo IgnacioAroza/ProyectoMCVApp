@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalApp.Data;
 using ProyectoFinalApp.Models;
+using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
+    [Authorize]
     public class StocksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,11 +22,28 @@ namespace ProyectoFinalApp.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: Stocks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pagina = 1)
         {
-            var applicationDbContext = _context.stocks.Include(s => s.producto);
-            return View(await applicationDbContext.ToListAsync());
+            Paginador paginas = new Paginador();
+            paginas.PaginaActual = pagina;
+            paginas.RegistrosPorPagina = 3;
+
+            var applicationDbContext = _context.stocks.Select(s => s);
+
+            paginas.TotalRegistros = applicationDbContext.Count();
+
+            var mostarRegistros = applicationDbContext
+                .Skip((pagina - 1) * paginas.RegistrosPorPagina)
+                .Take(paginas.RegistrosPorPagina);
+
+            StockVM datos = new StockVM()
+            {
+                stocks = mostarRegistros.ToList(),
+                paginador = paginas
+            };
+            return View(datos);
         }
 
         // GET: Stocks/Details/5

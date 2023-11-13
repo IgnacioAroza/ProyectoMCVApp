@@ -13,7 +13,7 @@ using ProyectoFinalApp.ViewModel;
 
 namespace ProyectoFinalApp.Controllers
 {
-    
+    [Authorize]
     public class CompradoresController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +27,7 @@ namespace ProyectoFinalApp.Controllers
 
         [AllowAnonymous]
         // GET: Compradores
-        public async Task<IActionResult> Index(string? busqNombre, string? busqApellido, int pagina = 1)
+        public IActionResult Index(string? busqNombre, string? busqApellido, int pagina = 1)
         {
             Paginador paginas = new Paginador();
             paginas.PaginaActual = pagina;

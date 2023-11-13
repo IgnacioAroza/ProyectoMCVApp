@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ProyectoFinalApp.Models.Stock>
+﻿@* @model IEnumerable<ProyectoFinalApp.Models.Stock> *@
+    @model ProyectoFinalApp.ViewModel.StockVM
 
 @{
     ViewData["Title"] = "Index";
@@ -6,29 +7,27 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Compra</a>
-</p>
-<p>
-    <a asp-action="Venta">Venta</a>
+<p class="d-flex">
+    <a asp-action="Create" class="btn btn-info btn-sm compra"><i class="bi bi-plus-circle"></i> Compra</a>
+    <a asp-action="Venta" class="btn btn-info btn-sm venta"><i class="bi bi-plus-circle"></i> Venta</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.cantidad)
+                @Html.DisplayNameFor(model => model.stocks[0].cantidad)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fecha)
+                @Html.DisplayNameFor(model => model.stocks[0].fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.producto)
+                @Html.DisplayNameFor(model => model.stocks[0].producto)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.stocks) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.cantidad)
@@ -40,11 +39,41 @@
                 @Html.DisplayFor(modelItem => item.producto.nombre)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">
+                    <i class="bi bi-card-text"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<partial name="_Paginador" for="@Model.paginador" />
+<style>
+    .compra{
+        margin-right: 20px
+    }
+
+    .venta{
+        margin-left: 20px;
+    }
+
+    .bi-plus-circle {
+        font-size: 1.5rem;
+        padding-bottom: 5px;
+    }
+
+    .btn {
+        font-weight: bold;
+    }
+
+    .btn-info {
+        height: 55px;
+    }
+</style>

@@ -6,18 +6,19 @@
 }
 
 <h1>Index</h1>
-<form method="post" asp-action="ImportarProductos" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="archivo">Seleccione un archivo Excel:</label>
-        <br />
-        <input type="file" name="archivo" id="archivo" class="form-control-file mt-2">
-    </div>
-    <button type="submit" class="btn btn-primary mt-2 mb-2">Importar</button>
-</form>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<form method="get" asp-action="Index">
+<div class="form-container d-flex mb-2 flex-row">
+    <p>
+        <a asp-action="Create" class="btn btn-info btn-sm"><i class="bi bi-plus-circle"></i> Crear Nuevo</a>
+    </p>
+    <form class="form" method="post" asp-action="ImportarProductos" enctype="multipart/form-data">
+        <div class="form-group input-group justify-content-center">
+            <label for="archivo">Seleccione un archivo Excel:</label>
+            <input type="file" name="archivo" id="archivo" class="form-control-file mt-2">
+        </div>
+        <button type="submit" class="btn btn-primary mt-2 mb-2">Importar</button>
+    </form>
+</div>
+<form method="get" asp-action="Index" class="mt-2 mb-4">
     Nombre:
     <input type="text" placeholder="Ingresar nombre" name="busqNombre" value="@Model.busquedaNombre"/>
     Codigo:
@@ -88,3 +89,32 @@
 </table>
 
 <partial name="_Paginador" for="@Model.paginador"/>
+
+<style>
+    .bi-plus-circle {
+        font-size: 1.5rem;
+        padding-bottom: 5px;
+    }
+
+    .btn {
+        font-weight: bold;
+    }
+
+    .btn-info {
+        height: 55px;
+    }
+
+    .form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 0 0 6rem; 
+        height: 8rem;
+        width: 30rem;
+        justify-content: center;
+    }
+
+    .form-container{
+        align-items: center;
+    }
+</style>

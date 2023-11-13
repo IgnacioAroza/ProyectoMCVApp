@@ -9,7 +9,7 @@
 
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info btn-sm"><i class="bi bi-plus-circle"></i> Crear Nuevo</a>
 </p>
 <form id="form">
     Nombre:
@@ -17,7 +17,7 @@
     Apellido:
     <input type="text" placeholder="Ingresar apellido" name="busqApellido" value="@Model.busquedaApellido" />
     <input type="submit" value="Buscar" class="btn btn-primary" />
-    <input type="reset" value="Limpiar filtros" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-danger">Limpiar</a>
 </form>
 <table class="table">
     <thead>
@@ -50,16 +50,21 @@
                 @Html.DisplayFor(modelItem => item.dni)
             </td>
             <td>
-                @* @Html.DisplayFor(modelItem => item.foto) *@
                 @if (!string.IsNullOrEmpty(item.foto))
                 {
                     <img src="~/fotos/@item.foto" style="max-width:50px" />
                 }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">
+                    <i class="bi bi-card-text"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
             </td>
         </tr>
 }
@@ -67,3 +72,16 @@
 </table>
 
 <partial name="_Paginador" for="@Model.paginador"/>
+
+<style>
+    .bi-plus-circle{
+        font-size: 1.5rem;
+        padding-bottom: 5px;
+    }
+    .btn{
+        font-weight: bold;
+    }
+    .btn-info{
+        height: 55px;
+    }
+</style>

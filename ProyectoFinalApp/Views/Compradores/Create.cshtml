@@ -28,13 +28,11 @@
                 <span asp-validation-for="dni" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @* <label asp-for="foto" class="control-label"></label>
-                <input asp-for="foto" class="form-control" /> *@
                 <img name="imagen" id="imagen" src="" class="mt-2 mb-2" style="max-width:100px" />
                 <input type="file" id="foto" name="foto" accept="image/jpeg" class="mt-2 mb-2" />
                 <span asp-validation-for="foto" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -42,7 +40,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-danger mt-2">Volver</a>
 </div>
 
 @section Scripts {
